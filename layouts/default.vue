@@ -1,117 +1,117 @@
 <template>
   <v-app dark>
-    <v-navigation-drawer
-      v-model="drawer"
-      :mini-variant="miniVariant"
-      :clipped="clipped"
-      fixed
-      app
-    >
-      <v-list>
-        <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.to"
-          router
-          exact
-        >
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-    <v-app-bar
-      :clipped-left="clipped"
-      fixed
-      app
-    >
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-btn
-        icon
-        @click.stop="miniVariant = !miniVariant"
-      >
-        <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        @click.stop="clipped = !clipped"
-      >
-        <v-icon>mdi-application</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        @click.stop="fixed = !fixed"
-      >
-        <v-icon>mdi-minus</v-icon>
-      </v-btn>
-      <v-toolbar-title v-text="title" />
-      <v-spacer />
-      <v-btn
-        icon
-        @click.stop="rightDrawer = !rightDrawer"
-      >
-        <v-icon>mdi-menu</v-icon>
-      </v-btn>
+    <v-app-bar fixed app flat v-if="$vuetify.breakpoint.mdAndUp">
+      <div class="full-width d-flex align-center justify-space-between">
+        <div class="half-width d-flex justify-center">
+          <v-btn
+            class="mr-4"
+            v-for="(item, index) in socialMedia"
+            :key="index"
+            :color="item.color"
+            icon
+            large
+            ><v-icon>{{ item.icon }}</v-icon></v-btn
+          >
+        </div>
+        <div class="half-width d-flex justify-space-around align-center">
+          <div>
+            <v-btn
+              class="mr-4"
+              v-for="(item, index) in pages"
+              :key="index"
+              @click="route(item.link, index)"
+              :class="selectedBtn === index ? 'selected-btn' : ''"
+              text
+              >{{ item.title }}</v-btn
+            >
+          </div>
+          <v-btn dark @click="toggleTheme" icon>
+            <v-icon color="yellow" v-if="!$vuetify.theme.dark" x-large
+              >mdi-weather-sunny</v-icon
+            >
+            <v-icon color="blue lighten-1" v-else x-large
+              >mdi-moon-waxing-crescent</v-icon
+            >
+          </v-btn>
+        </div>
+      </div>
     </v-app-bar>
-    <v-main>
-      <v-container>
-        <Nuxt />
-      </v-container>
-    </v-main>
-    <v-navigation-drawer
-      v-model="rightDrawer"
-      :right="right"
-      temporary
-      fixed
-    >
-      <v-list>
-        <v-list-item @click.native="right = !right">
-          <v-list-item-action>
-            <v-icon light>
-              mdi-repeat
-            </v-icon>
-          </v-list-item-action>
-          <v-list-item-title>Switch drawer (click me)</v-list-item-title>
-        </v-list-item>
-      </v-list>
+
+    <v-app-bar fixed app flat v-else>
+      <v-app-bar-nav-icon @click="drawer = true" />
+    </v-app-bar>
+    <v-navigation-drawer v-model="drawer" absolute temporary>
+      <div class="d-flex justify-end pa-4">
+        <v-btn dark @click="toggleTheme" icon>
+        <v-icon color="yellow" v-if="!$vuetify.theme.dark" x-large
+          >mdi-weather-sunny</v-icon
+        >
+        <v-icon color="blue lighten-1" v-else x-large
+          >mdi-moon-waxing-crescent</v-icon
+        >
+      </v-btn>
+      </div>
+      
+      <div
+        class="d-flex flex-column align-center half-height justify-space-around"
+      >
+        <v-btn
+          v-for="(item, index) in pages"
+          :key="index"
+          @click="route(item.link, index)"
+          :class="selectedBtn === index ? 'selected-btn' : ''"
+          text
+          >{{ item.title }}</v-btn
+        >
+      </div>
     </v-navigation-drawer>
-    <v-footer
-      :absolute="!fixed"
-      app
-    >
-      <span>&copy; {{ new Date().getFullYear() }}</span>
-    </v-footer>
+    <v-main>
+      <Nuxt />
+    </v-main>
   </v-app>
 </template>
 
-<script>
-export default {
-  name: 'DefaultLayout',
-  data () {
-    return {
-      clipped: false,
-      drawer: false,
-      fixed: false,
-      items: [
-        {
-          icon: 'mdi-apps',
-          title: 'Welcome',
-          to: '/'
-        },
-        {
-          icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire'
-        }
-      ],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
-      title: 'Vuetify.js'
+<script lang="ts">
+import { Component, Vue } from "nuxt-property-decorator";
+
+@Component({
+  filters: {},
+})
+export default class Default extends Vue {
+  [x: string]: any;
+
+  //* variables
+  private drawer: boolean = false;
+  private selectedBtn: number = 0;
+  private pages = [
+    { title: "Home", link: "index" },
+    { title: "About", link: "about" },
+    { title: "Contact", link: "contact" },
+    { title: "Comment", link: "comment" },
+  ];
+  private socialMedia = [
+    { icon: "mdi-twitter", color: "#1DA1F2" },
+    { icon: "mdi-instagram", color: "#8a3ab9" },
+    { icon: "mdi-whatsapp", color: "#25D366" },
+  ];
+
+  //*functionality
+  private toggleTheme() {
+    this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
+    localStorage.setItem("darkMode", this.$vuetify.theme.dark);
+  }
+  private route(link: string, index: number) {
+    this.$router.push({ name: link });
+    this.selectedBtn = index;
+  }
+
+  //*lifecycle
+  created() {
+    const theme = localStorage.getItem("darkMode");
+    if (theme == "true") {
+      this.$vuetify.theme.dark = true;
+    } else {
+      this.$vuetify.theme.dark = false;
     }
   }
 }

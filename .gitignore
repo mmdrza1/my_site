@@ -1,23 +1,11 @@
-<<<<<<< HEAD
-# Logs
-logs
-=======
 # Created by .ignore support plugin (hsz.mobi)
 ### Node template
 # Logs
 /logs
->>>>>>> e4b36daebcb41dec2de1352b4ae54b5f8fa36035
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-<<<<<<< HEAD
-lerna-debug.log*
-
-# Diagnostic reports (https://nodejs.org/api/report.html)
-report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
-=======
->>>>>>> e4b36daebcb41dec2de1352b4ae54b5f8fa36035
 
 # Runtime data
 pids
@@ -30,19 +18,11 @@ lib-cov
 
 # Coverage directory used by tools like istanbul
 coverage
-<<<<<<< HEAD
-*.lcov
-=======
->>>>>>> e4b36daebcb41dec2de1352b4ae54b5f8fa36035
 
 # nyc test coverage
 .nyc_output
 
-<<<<<<< HEAD
-# Grunt intermediate storage (https://gruntjs.com/creating-plugins#storing-task-files)
-=======
 # Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
->>>>>>> e4b36daebcb41dec2de1352b4ae54b5f8fa36035
 .grunt
 
 # Bower dependency directory (https://bower.io/)
